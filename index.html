@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<!-- Mirrored from tool789club.elementfx.com/ff/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 21 Jun 2025 09:27:20 GMT -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Tool Phân Tích Tài Xỉu By Nguyên</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        /* Ẩn tool và iframe khi chưa nhập key */
+        #tool, iframe {
+            display: none;
+        }
+
+        /* Màn hình nhập key full màn hình */
+        #login-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #1e1e1e 0%, #000000cc 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.login-box {
+    background: #121212;
+    padding: 30px 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.4);
+    text-align: center;
+    border: 1px solid #333;
+    width: 320px;
+    position: relative;
+}
+
+.login-box h3 {
+    color: #ffffff;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.login-box input,
+.login-box button {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.login-box input {
+    border: 1px solid #ccc;
+    background: #1e1e1e;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.login-box input:focus {
+    border-color: #ff9800;
+}
+
+.login-box button {
+    background: linear-gradient(90deg, #ff9800, #ff5722);
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-box button:hover {
+    background: linear-gradient(90deg, #ffa726, #fb8c00);
+}
+
+
+.status-text {
+    color: #ffeb3b;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.contact {
+    font-size: 12px;
+    color: #ccc;
+    margin-top: 10px;
+}
+
+.login-box .tool-label {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translate(-50%, -50%) skewX(-20deg);
+    background: linear-gradient(to right, #000000, #333333);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(255,255,255,0.1);
+    user-select: none;
+    border: 1px solid #ff9800;
+}
+
+.login-box .tool-label span {
+    display: inline-block;
+    transform: skewX(20deg);
+}
+
+
+        .tool-container {
+            position: fixed;
+            top: 50px;
+            left: 50px;
+            width: 270px;
+            background: linear-gradient(90deg, #002cde, #2f7cf7);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            padding: 10px 10px 10px 10px;
+            text-align: center;
+            z-index: 9999;
+            user-select: none;
+            border: 1px solid #000000;
+            padding-top: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 50px;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .header img {
+            height: 40px;
+        }
+
+        .header .close-btn {
+            position: absolute;
+            top: -10px;
+            right: -5px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            cursor: default;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .choice {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .circle {
+            width: 50px;
+            height: 50px;
+            border: 2px solid white;
+            border-radius: 50%;
+            margin-top: 5px;
+            transition: all 0.3s;
+            background: transparent;
+        }
+
+        .choice span {
+            font-size: 18px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .choice.active .circle {
+            background: red;
+            animation: blink 0.5s infinite alternate;
+        }
+
+        @keyframes blink {
+            from { 
+                background: rgba(255, 0, 0, 0.3);
+                box-shadow: 0 0 5px rgba(255, 0, 0, 0.3); 
+            }
+            to { 
+                background: rgba(255, 0, 0, 1);
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); 
+            }
+        }
+
+        .footer {
+            font-size: 11px;
+            color: #5d4037;
+            margin-top: 8px;
+        }
+
+        .tool-label {
+            position: absolute;
+            top: 52px;
+            left: 50%;
+            transform: translate(-50%, -50%) skewX(-20deg);
+            background: black;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 15px;
+            user-select: none;
+            z-index: 5;
+        }
+
+        .tool-label span {
+            display: inline-block;
+            transform: skewX(20deg);
+        }
+
+        #countdown {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 0 0 3px #000;
+        }
+
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: -1;
+        }
+        
+        /* Rainbow text style */
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        .rainbow-text {
+            font-weight: bold;
+            background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowText 3s linear infinite;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Màn hình nhập key -->
+<div id="login-container" style="display:none;">
+    <!-- Đã ẩn phần nhập key -->
+</div>
+
+
+<!-- Giao diện tool -->
+<div class="tool-container" id="tool" style="display:block;">
+    <img class="logo" src="789club-logo.png" alt="logo" />
+    <div class="header">
+        <div class="close-btn" onclick="location.reload()">×</div>
+    </div>
+    <div class="choices">
+        <div class="choice" id="tai">
+            <span>TÀI</span>
+            <div class="circle"></div>
+        </div>
+        <div class="choice" id="xiu">
+            <span>XỈU</span>
+            <div class="circle"></div>
+        </div>
+    </div>
+    <div class="tool-label"><span>TOOL</span></div>
+    <div class="footer">created by Nguyên</div>
+</div>
+
+<!-- Iframe game -->
+<iframe id="game-iframe" src="https://play.789.club/" allow="autoplay; encrypted-media" frameborder="0" style="display:block;"></iframe>
+
+<script>
+    // disable right click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    document.onkeydown = function (e) {
+        // disable F12 key
+        if(e.keyCode == 123) {
+            return false;
+        }
+        // disable I key
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 73){
+            return false;
+        }
+        // disable J key
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+            return false;
+        }
+        // disable U key
+        if(e.ctrlKey && e.keyCode == 85) {
+            return false;
+        }
+    }
+
+    // Các biến dùng cho auto chọn
+    let blinkTimeout = null;
+    let autoInterval = null;
+
+    function autoPick() {
+        const autoChoice = Math.random() < 0.5 ? "TÀI" : "XỈU";
+        clearTimeout(blinkTimeout);
+        document.getElementById("tai").classList.remove("active");
+        document.getElementById("xiu").classList.remove("active");
+        if (autoChoice === "TÀI") {
+            document.getElementById("tai").classList.add("active");
+        } else {
+            document.getElementById("xiu").classList.add("active");
+        }
+        // Tắt nhấp nháy sau 15 giây
+        blinkTimeout = setTimeout(() => {
+            document.getElementById("tai").classList.remove("active");
+            document.getElementById("xiu").classList.remove("active");
+        }, 15000);
+    }
+
+    // Bắt đầu tự động nháy ngẫu nhiên sau 30 giây khi trang load
+    setTimeout(() => {
+        autoPick(); // chọn ngay lập tức sau 30 giây
+        autoInterval = setInterval(() => {
+            autoPick();
+        }, 60000); // sau đó mỗi 60 giây chọn lại
+    }, 30000);
+
+    dragElement(document.getElementById("tool"));
+
+    function dragElement(elmnt) {
+        let pos1 = 0,
+            pos2 = 0,
+            pos3 = 0,
+            pos4 = 0;
+        // PC
+        elmnt.onmousedown = dragMouseDown;
+        // Mobile
+        elmnt.ontouchstart = dragTouchStart;
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDragMouse;
+        }
+        function elementDragMouse(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+            elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+        }
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+        // Mobile
+        function dragTouchStart(e) {
+            e.preventDefault();
+            pos3 = e.touches[0].clientX;
+            pos4 = e.touches[0].clientY;
+            document.ontouchmove = elementDragTouch;
+            document.ontouchend = closeTouchDragElement;
+        }
+        function elementDragTouch(e) {
+            e.preventDefault();
+            pos1 = pos3 - e.touches[0].clientX;
+            pos2 = pos4 - e.touches[0].clientY;
+            pos3 = e.touches[0].clientX;
+            pos4 = e.touches[0].clientY;
+            elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+            elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+        }
+        function closeTouchDragElement() {
+            document.ontouchmove = null;
+            document.ontouchend = null;
+        }
+    }
+</script>
+
+</body>
+
+<!-- Mirrored from tool789club.elementfx.com/ff/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 21 Jun 2025 09:27:20 GMT -->
+</html>
